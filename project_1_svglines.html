@@ -16,7 +16,7 @@
           var lineFunction = d3.svg.line()
                       .x(function(d) { return d.x;})
                       .y(function(d) { return d.y;})
-                      .interpolate("linear");
+                      .interpolate("step-before");
 
           var svgContainer = d3.select("body").append("svg")
                       .attr("width", 200)
