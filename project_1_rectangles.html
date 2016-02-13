@@ -30,8 +30,8 @@
           }
 
           var svgContainer = d3.select("body").append("svg")
-                .attr("width", max_x + 20)
-                .attr("height", max_y + 20);
+                .attr("width", max_x + 10)
+                .attr("height", max_y + 10);
 
           var rectangles = svgContainer.selectAll("rect")
                 .data(jsonRectangles)
