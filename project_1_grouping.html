@@ -42,7 +42,10 @@
             .attr("r", function (d) { return d.radius; })
             .style("fill", function (d) { return d.color; });
 
-          var rectangles = svgContainer.selectAll("rect")
+          var rectGroup = svgContainer.append("g")
+            .attr("transform", "translate(10, 10)");
+
+          var rectangles = rectGroup.selectAll("rect")
             .data(rectangleData)
             .enter()
             .append("rect");
