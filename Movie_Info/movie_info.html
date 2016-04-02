@@ -1,104 +1,123 @@
 <!DOCTYPE html>
 <html>
     <meta charset="utf-8">
-
+    <body>
         <head>
             <script type="text/javascript" src="../d3/d3.min.js"></script>
         </head>
 
-<style>
+        <style>
 
-body {
-  font: 10px sans-serif;
-}
+            body {
+                font: 10px sans-serif;
+            }
 
-.bar rect {
-  fill: steelblue;
-}
+            .bar rect {
+                fill: #009999;
+            }
 
-.bar text.value {
-  fill: white;
-}
+            .bar text.value {
+                fill: white;
+            }
 
-.axis {
-  shape-rendering: crispEdges;
-}
+            .axis {
+                shape-rendering: crispEdges;
+            }
 
-.axis path {
-  fill: none;
-}
+            .axis path {
+                fill: none;
+            }
 
-.x.axis line {
-  stroke: #fff;
-  stroke-opacity: .8;
-}
+            .x.axis line {
+                stroke: #fff;
+                stroke-opacity: .8;
+            }
 
-.y.axis path {
-  stroke: black;
-}
+            .y.axis path {
+                stroke: black;
+            }
 
-</style>
-<body>
-<script>
+        </style>
 
-var m = [30, 10, 10, 30],
-    w = 960 - m[1] - m[3],
-    h = 930 - m[0] - m[2];
+        <script>
+            var data = [
+                {"name": "Star Wars I: The Phantom Menace", "runtime": 136},
+                {"name": "Star Wars II: Attack of the Clones", "runtime": 142},
+                {"name": "Star Wars III: Revenge of the Sith", "runtime": 140},
+                {"name": "Star Wars IV: A New Hope", "runtime": 121},
+                {"name": "Star Wars V: Empire Strikes Back", "runtime": 124},
+                {"name": "Star Wars VI: Return of the Jedi", "runtime": 134},
+                {"name": "Star Wars VII: The Force Awakens", "runtime": 135},
+                {"name": "Star Trek: The Motion Picture", "runtime": 132},
+                {"name": "Star Trek: Wrath of Khan", "runtime": 113},
+                {"name": "Star Trek: Search for Spock", "runtime": 105},
+                {"name": "Star Trek: The Voyage Home", "runtime": 122},
+                {"name": "Star Trek: The Final Frontier", "runtime": 106},
+                {"name": "Star Trek: The Undiscovered Country", "runtime": 110},
+                {"name": "Star Trek: Generations", "runtime": 118},
+                {"name": "Star Trek: First Contact", "runtime": 111},
+                {"name": "Star Trek: Insurrection", "runtime": 103},
+                {"name": "Star Trek: Nemesis", "runtime": 116},
+                {"name": "Star Trek (2009)", "runtime": 126},
+                {"name": "Star Trek: Into Darkness", "runtime": 133}
+            ];
 
-var format = d3.format(",.0f");
+            var m = [30, 10, 10, 30],
+                w = 960 - m[1] - m[3],
+                h = 930 - m[0] - m[2];
 
-var x = d3.scale.linear().range([0, w]),
-    y = d3.scale.ordinal().rangeRoundBands([0, h], .1);
+            var format = d3.format(",.0f");
 
-var xAxis = d3.svg.axis().scale(x).orient("top").tickSize(-h),
-    yAxis = d3.svg.axis().scale(y).orient("left").tickSize(0);
+            var x = d3.scale.linear().range([0, w]),
+                y = d3.scale.ordinal().rangeRoundBands([0, h], .1);
 
-var svg = d3.select("body").append("svg")
-    .attr("width", w + m[1] + m[3])
-    .attr("height", h + m[0] + m[2])
-  .append("g")
-    .attr("transform", "translate(" + m[3] + "," + m[0] + ")");
+            var xAxis = d3.svg.axis().scale(x).orient("top").tickSize(-h),
+                yAxis = d3.svg.axis().scale(y).orient("left").tickSize(0);
 
-d3.csv("movie_info.csv", function(error, data) {
-  if (error) throw error;
+            var svg = d3.select("body").append("svg")
+                .attr("width", w + m[1] + m[3])
+                .attr("height", h + m[0] + m[2])
+              .append("g")
+                .attr("transform", "translate(" + m[3] + "," + m[0] + ")");
 
-  // Parse numbers, and sort by value.
-  data.forEach(function(d) { d.value = +d.value; });
-  data.sort(function(a, b) { return b.value - a.value; });
+              // Parse numbers, and sort by value.
+              data.forEach(function(d) { d.value = +d.value});
 
-  // Set the scale domain.
-  x.domain([0, d3.max(data, function(d) { return d.value; })]);
-  y.domain(data.map(function(d) { return d.name; }));
+              data.sort(function(a, b) { return b.runtime - a.runtime; });
 
-  var bar = svg.selectAll("g.bar")
-      .data(data)
-    .enter().append("g")
-      .attr("class", "bar")
-      .attr("transform", function(d) { return "translate(0," + y(d.name) + ")"; });
+              // Set the scale domain.
+              x.domain([0, d3.max(data, function(d) { return d.runtime; })]);
+              y.domain(data.map(function(d) { return d.name; }));
 
-  bar.append("rect")
-      .attr("width", function(d) { return x(d.value); })
-      .attr("height", y.rangeBand());
+              var bar = svg.selectAll("g.bar")
+                  .data(data)
+                .enter().append("g")
+                  .attr("class", "bar")
+                  .attr("transform", function(d) { return "translate(0," + y(d.name) + ")"; })          ;
 
-  bar.append("text")
-      .attr("class", "value")
-      .attr("x", function(d) { return x(d.value); })
-      .attr("y", y.rangeBand() / 2)
-      .attr("dx", -3)
-      .attr("dy", ".35em")
-      .attr("text-anchor", "end")
-      .text(function(d) { return format(d.value); });
+              bar.append("rect")
+                  .attr("width", function(d) { return x(d.runtime); })
+                  .attr("height", y.rangeBand());
 
-  svg.append("g")
-      .attr("class", "x axis")
-      .call(xAxis);
+              bar.append("text")
+                  .attr("class", "value")
+                  .attr("x", function(d) { return x(d.runtime); })
+                  .attr("y", y.rangeBand() / 2)
+                  .attr("dx", -3)
+                  .attr("dy", ".35em")
+                  .attr("text-anchor", "end")
+                  .text(function(d) { return format(d.runtime); });
 
-  svg.append("g")
-      .attr("class", "y axis")
-      .call(yAxis);
-});
+              svg.append("g")
+                  .attr("class", "x axis")
+                  .call(xAxis);
 
-</script>
+              svg.append("g")
+                  .attr("class", "y axis")
+                  .call(yAxis);
+
+
+        </script>
     </body>
 </html>
 
