@@ -72,7 +72,7 @@
                 y = d3.scale.ordinal().rangeRoundBands([0, h], .1);
 
             var xAxis = d3.svg.axis().scale(x).orient("top").tickSize(-h),
-                yAxis = d3.svg.axis().scale(y).orient("left").tickSize(0);
+                yAxis = d3.svg.axis().scale(y).orient("right");
 
             var svg = d3.select("body").append("svg")
                 .attr("width", w + m[1] + m[3])
@@ -81,7 +81,7 @@
                 .attr("transform", "translate(" + m[3] + "," + m[0] + ")");
 
               // Parse numbers, and sort by value.
-              data.forEach(function(d) { d.value = +d.value});
+              data.forEach(function(d) { d.runtime = +d.runtime});
 
               data.sort(function(a, b) { return b.runtime - a.runtime; });
 
@@ -93,7 +93,7 @@
                   .data(data)
                 .enter().append("g")
                   .attr("class", "bar")
-                  .attr("transform", function(d) { return "translate(0," + y(d.name) + ")"; })          ;
+                  .attr("transform", function(d) { return "translate(0," + y(d.name) + ")"; });
 
               bar.append("rect")
                   .attr("width", function(d) { return x(d.runtime); })
