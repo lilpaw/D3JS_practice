@@ -15,7 +15,7 @@
           width = canvas.width,
           height = canvas.height;
 
-      var sites = d3.range(100).map(function() { return [Math.random() * width, Math. random() * height]; }),
+      var sites = d3.range(100).map(function() { return [Math.random() * width, Math.random() * height]; }),
           cells = d3.voronoi().size([width, height]).polygons(sites),
           duration = 7000;
 
