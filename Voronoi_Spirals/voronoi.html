@@ -5,7 +5,7 @@
 <!DOCTYPE html>
 <html>
   <meta charset="utf-8">
-  <canvas width="930" height="930" ></canvas>
+  <canvas width="600" height="600" ></canvas>
 
   <head>
     <script src="https://d3js.org/d3.v4.0.0-alpha.28.min.js"></script>
@@ -19,12 +19,13 @@
           width = canvas.width,
           height = canvas.height;
 
-      var sites = d3.range(100).map(function() { return [Math.random() * width, Math.random() * height]; }),
+      var sites = d3.range(100).map(function() { return [Math.random() * width,    Math.random() * height]; }),
           cells = d3.voronoi().size([width, height]).polygons(sites),
           duration = 7000;
 
-      var color = d3.scaleCubehelix()
-          .domain([0, duration]);
+      var color = d3.scaleLinear() //Cubehelix()
+          .domain([0, duration])
+          .range(["lightyellow", "navy"]);
 
       var timer = d3.timer(function(elapsed) {
         context.beginPath();
@@ -46,7 +47,7 @@
 
       function drawCell(cell) {
         context.moveTo(cell[0][0], cell[0][1]);
-        for (var i = 1, n = cell.length; i < n; ++i) context.lineTo(cell[i][0], cell[ i][1   ]);
+        for (var i = 1, n = cell.length; i < n; ++i) context.lineTo(cell[i][0], cell[i][1]);
         context.closePath();
       }
 
